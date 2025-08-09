@@ -1,0 +1,36 @@
+import os
+import re
+import shutil
+from dotenv import load_dotenv
+
+load_dotenv()  # Carrega variáveis do .env
+
+# Constantes
+SOURCE_DIR = os.getenv("SOURCE_DIR")
+DEST_DIR = os.getenv("DEST_DIR")
+REGEX_T_DIGITS = r"T(\d+)"
+REGEX_DATE = r"(\d{4})/(\d{2})/(\d{2}) (\d{2}:\d{2}:\d{2}) BRT"
+
+print(f"Source Directory: {SOURCE_DIR}")
+
+def copiar_arquivos():
+    for filename in os.listdir(SOURCE_DIR):
+        src_path = os.path.join(SOURCE_DIR, filename)
+        # Lê a primeira linha do arquivo para extrair a data
+        with open(src_path, encoding="utf-8") as f:
+            primeira_linha = f.readline()
+        date_match = re.search(REGEX_DATE, primeira_linha)
+        if date_match:
+            ano, mes = date_match.group(1), date_match.group(2)
+            dest_dir_ano_mes = os.path.join(DEST_DIR, ano, mes)
+            if not os.path.exists(dest_dir_ano_mes):
+                os.makedirs(dest_dir_ano_mes)
+            dest_path = os.path.join(dest_dir_ano_mes, filename)
+            shutil.copy2(src_path, dest_path)
+            print(f"Arquivo copiado: {filename} | Data: {ano}-{mes}")
+        else:
+            print(f"Data não encontrada na primeira linha de {filename}")
+
+
+if __name__== "__main__":
+    copiar_arquivos()
