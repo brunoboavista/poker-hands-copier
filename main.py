@@ -21,13 +21,15 @@ def copiar_arquivos():
             primeira_linha = f.readline()
         date_match = re.search(REGEX_DATE, primeira_linha)
         if date_match:
-            ano, mes = date_match.group(1), date_match.group(2)
-            dest_dir_ano_mes = os.path.join(DEST_DIR, ano, mes)
-            if not os.path.exists(dest_dir_ano_mes):
-                os.makedirs(dest_dir_ano_mes)
-            dest_path = os.path.join(dest_dir_ano_mes, filename)
+            ano = date_match.group(1)
+            mes = str(int(date_match.group(2)))  # Remove zero à esquerda
+            dia = str(int(date_match.group(3)))  # Remove zero à esquerda
+            dest_dir_ano_mes_dia = os.path.join(DEST_DIR, ano, mes, dia)
+            if not os.path.exists(dest_dir_ano_mes_dia):
+                os.makedirs(dest_dir_ano_mes_dia)
+            dest_path = os.path.join(dest_dir_ano_mes_dia, filename)
             shutil.copy2(src_path, dest_path)
-            print(f"Arquivo copiado: {filename} | Data: {ano}-{mes}")
+            print(f"Arquivo copiado: {filename} | Data: {ano}-{mes}-{dia}")
         else:
             print(f"Data não encontrada na primeira linha de {filename}")
 
