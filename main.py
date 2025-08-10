@@ -11,7 +11,17 @@ DEST_DIR = os.getenv("DEST_DIR")
 REGEX_T_DIGITS = r"T(\d+)"
 REGEX_DATE = r"(\d{4})/(\d{2})/(\d{2}) (\d{2}:\d{2}:\d{2}) BRT"
 
-print(f"Source Directory: {SOURCE_DIR}")
+print(f"\nSource Directory: {SOURCE_DIR}")
+
+def arquivo_deve_ser_copiado(src_path, dest_path):
+    if not os.path.exists(dest_path):
+        return True
+    
+    # Verifica se o arquivo de origem foi modificado depois do destino
+    if os.path.getmtime(src_path) > os.path.getmtime(dest_path):
+        return True
+    return False
+
 
 def copiar_arquivos():
     for filename in os.listdir(SOURCE_DIR):
@@ -28,8 +38,11 @@ def copiar_arquivos():
             if not os.path.exists(dest_dir_ano_mes_dia):
                 os.makedirs(dest_dir_ano_mes_dia)
             dest_path = os.path.join(dest_dir_ano_mes_dia, filename)
-            shutil.copy2(src_path, dest_path)
-            print(f"Arquivo copiado: {filename} | Data: {ano}-{mes}-{dia}")
+            if arquivo_deve_ser_copiado(src_path, dest_path):
+                shutil.copy2(src_path, dest_path)
+                print(f"Arquivo copiado: {filename} | Data: {ano}-{mes}")
+            else:
+                print(f"Arquivo já existe e está atualizado: {filename}")
         else:
             print(f"Data não encontrada na primeira linha de {filename}")
 
