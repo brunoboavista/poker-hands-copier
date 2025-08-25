@@ -41,8 +41,8 @@ def copiar_arquivos():
             if arquivo_deve_ser_copiado(src_path, dest_path):
                 shutil.copy2(src_path, dest_path)
                 print(f"Arquivo copiado: {filename} | Data: {ano}-{mes}")
-            else:
-                print(f"Arquivo já existe e está atualizado: {filename}")
+            # else:
+            #     print(f"Arquivo já existe e está atualizado: {filename}")
         else:
             print(f"Data não encontrada na primeira linha de {filename}")
 
