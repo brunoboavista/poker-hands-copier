@@ -9,7 +9,7 @@ load_dotenv()  # Carrega variáveis do .env
 SOURCE_DIR = os.getenv("SOURCE_DIR")
 DEST_DIR = os.getenv("DEST_DIR")
 REGEX_T_DIGITS = r"T(\d+)"
-REGEX_DATE = r"(\d{4})/(\d{2})/(\d{2}) (\d{2}:\d{2}:\d{2}) BRT"
+REGEX_DATE = r"(\d{4})/(\d{2})/(\d{2}) (\d{1,2}:\d{2}:\d{2}) BRT"
 
 print(f"\nSource Directory: {SOURCE_DIR}")
 
